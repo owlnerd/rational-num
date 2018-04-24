@@ -308,7 +308,7 @@ class Rational {
  // GETTER METHODS
  // --------------
   get sgn() {
-    return this.a < 0 : -1 : 1;
+    return this.a < 0 ? -1 : 1;
   }
 
   get whole() {
@@ -344,8 +344,7 @@ class Rational {
       if (Math.abs(this.a) < this.b) {
         return this.a + "/" + this.b;
       } else {
-        let whole = this.wholes;
-        whole = whole < 0 ? Math.ceil(whole) : Math.floor(whole);
+        let whole = this.whole;
         let rem = whole < 0 ? -(this.a % this.b) : this.a % this.b;
         return whole + "|" + rem + "/" + this.b;
       }
