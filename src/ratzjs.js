@@ -182,7 +182,7 @@ class Rational {
   // ALL IN PLACE METHODS ARE SUFFIXED BY "in"
   // EXAMPLES:
   //   let a = Rational.create("1/2");
-  //   let b = Rationsl.create("1/4");
+  //   let b = Rational.create("1/4");
   //   let c = a.add(b);
   //   console.log(`a: ${a} , c: ${c}`);  (output)=> a: 1/2 , c: 3/4
   //   a.addin(b);
@@ -360,7 +360,7 @@ class Rational {
       if (match == "{{D}}") return this.b.toString();
     });
   }
-  
+
 
 
 } // :~
