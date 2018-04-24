@@ -1,6 +1,7 @@
 class Rational {
 
 
+
   // MAIN CONSTRUCTOR | SHOULD NOT BE USED! USE FACTORY FUNCTIONS INSTEAD!
   // ---------------------------------------------------------------------
   constructor(a, b) {
@@ -14,6 +15,7 @@ class Rational {
       this.b = 1;
     }
   }
+
 
 
   // BASIC CONSTRUCTOR FACTORY FUNCTION
@@ -31,6 +33,7 @@ class Rational {
   }
 
 
+
   // GCD (greatest common divisor) STATIC METHOD
   // -------------------------------------------
   static gcd(a, b) {
@@ -43,12 +46,14 @@ class Rational {
   }
 
 
+
   // LCM (least common multiple) STATIC METHOD
   // -----------------------------------------
   static lcm(a, b) {
     let gcd = Rational.gcd(a, b);
     return (a / gcd) * b;
   }
+
 
 
   // GENERATES A RANDOM FRACTION WITH DENOMINATOR IN GIVEN RANGE
@@ -60,6 +65,7 @@ class Rational {
     let n = Math.floor(Math.random() * d);
     return Rational.construct(n, d);
   }
+
 
 
   // REDUCES THE FRACTION (normalizes it)
@@ -78,6 +84,7 @@ class Rational {
   }
 
 
+
   // RETURNS A NEGATIVE OF PASSED ARGUMENT
   // -------------------------------------
   static negate(r) {
@@ -91,6 +98,7 @@ class Rational {
   static negatein(r) {
     r.a = -r.a;
   }
+
 
 
   // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIOAL NUMBER OBJEST FROM
@@ -119,6 +127,7 @@ class Rational {
   }
 
 
+
   // CONSTRUCTOR FACTORY FUNCTION | CREATES A Rational NUMBER OBJECT FROM
   // PASSED STRING
   // EXAMPLES:
@@ -136,6 +145,7 @@ class Rational {
     let b = sliced[3] == "-" ? -Number(sliced[4]) : Number(sliced[4]);
     return Rational.construct(a, b);
   }
+
 
 
   // CONSTRUCTOR FACTORY FUNCTION | CREATES A Rational NUMBER OBJECT FROM
@@ -164,6 +174,7 @@ class Rational {
     if (!isNaN(arg1)) return Rational.decToFrac(Number(arg1));
     else return Rational.strToFrac(arg1);
   }
+
 
 
   // FRACTIONAL NUMBERS CALCULATIONS METHODS
@@ -303,6 +314,7 @@ class Rational {
   }
 
 
+
   // TO STRING METHOD
   // ----------------
   toString(mixed = false) {
@@ -328,6 +340,7 @@ class Rational {
   }
 
 
+
   // FORMAT METHOD
   // -------------
   format(pattern = "{{S}}[{{M}}]{{N}}/{{D}}") {
@@ -347,6 +360,7 @@ class Rational {
       if (match == "{{D}}") return this.b.toString();
     });
   }
+  
 
 
 } // :~
