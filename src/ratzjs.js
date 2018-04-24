@@ -329,7 +329,7 @@ class Rational {
       if (Math.abs(this.a) < this.b) {
         return this.a + "/" + this.b;
       } else {
-        let whole = this.a / this.b;
+        let whole = this.wholes;
         whole = whole < 0 ? Math.ceil(whole) : Math.floor(whole);
         let rem = whole < 0 ? -(this.a % this.b) : this.a % this.b;
         return whole + "|" + rem + "/" + this.b;
