@@ -51,6 +51,7 @@ class Rational {
   // -----------------------------------------
   static lcm(a, b) {
     let gcd = Rational.gcd(a, b);
+    // this is 100% valid and will result with integer as gcd(a,b)|a
     return (a / gcd) * b;
   }
 
@@ -61,6 +62,7 @@ class Rational {
   //   (0, p-1)/(1, p)
   // -----------------------------------------------------------
   static rndFrac(p = 100) {
+    // Can d ever be 0 ??? Inspect this in depth
     let d = Math.floor(Math.random() * p) + 1;
     let n = Math.floor(Math.random() * d);
     return Rational.construct(n, d);
@@ -102,7 +104,7 @@ class Rational {
 
 
 
-  // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIOAL NUMBER OBJEST FROM
+  // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIONAL NUMBER OBJEST FROM
   // PASSED DECIMAL val.
   // EXAMPLES:
   //   - let a = Rational.decToFrac(1.8);
@@ -262,6 +264,10 @@ class Rational {
     return Rational.construct(Math.pow(this.a, p), Math.pow(this.b, p));
   }
 
+
+
+  // COMPARATION METHODS
+  // -------------------
   cmp(r) {
     if (!(r instanceof Rational)) return NaN;
     let lcm = Rational.lcm(this.b, r.b);
@@ -298,11 +304,20 @@ class Rational {
     return this.a / this.b;
   }
 
-  get wholes() {
-    return Math.floor(this.a / this.b);
+
+
+ // GETTER METHODS
+ // --------------
+  get sgn() {
+    return this.a < 0 ? -1 : 1;
   }
 
-  get fraction() {
+  get whole() {
+    let whole = this.a / this.b;
+    return whole < 0 ? Math.ceil(whole) : Math.floor(whole);
+  }
+
+  get frac() {
     return Rational.construct(this.a % this.b, this.b);
   }
 
@@ -330,8 +345,7 @@ class Rational {
       if (Math.abs(this.a) < this.b) {
         return this.a + "/" + this.b;
       } else {
-        let whole = this.a / this.b;
-        whole = whole < 0 ? Math.ceil(whole) : Math.floor(whole);
+        let whole = this.whole;
         let rem = whole < 0 ? -(this.a % this.b) : this.a % this.b;
         return whole + "|" + rem + "/" + this.b;
       }
