@@ -101,7 +101,7 @@ class Rational {
 
 
 
-  // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIOAL NUMBER OBJEST FROM
+  // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIONAL NUMBER OBJEST FROM
   // PASSED DECIMAL val.
   // EXAMPLES:
   //   - let a = Rational.decToFrac(1.8);
@@ -297,11 +297,16 @@ class Rational {
     return this.a / this.b;
   }
 
-  get wholes() {
-    return Math.floor(this.a / this.b);
+  get sgn() {
+    return this.a < 0 : -1 : 1;
   }
 
-  get fraction() {
+  get whole() {
+    let whole = this.a / this.b;
+    return whole < 0 ? Math.ceil(whole) : Math.floor(whole);
+  }
+
+  get frac() {
     return Rational.construct(this.a % this.b, this.b);
   }
 
