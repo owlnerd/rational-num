@@ -51,6 +51,7 @@ class Rational {
   // -----------------------------------------
   static lcm(a, b) {
     let gcd = Rational.gcd(a, b);
+    // this is 100% valid and will result with integer as gcd(a,b)|a
     return (a / gcd) * b;
   }
 
@@ -61,6 +62,7 @@ class Rational {
   //   (0, p-1)/(1, p)
   // -----------------------------------------------------------
   static rndFrac(p = 100) {
+    // Can d ever be 0 ??? Inspect this in depth
     let d = Math.floor(Math.random() * p) + 1;
     let n = Math.floor(Math.random() * d);
     return Rational.construct(n, d);
@@ -261,6 +263,10 @@ class Rational {
     return Rational.construct(Math.pow(this.a, p), Math.pow(this.b, p));
   }
 
+
+
+  // COMPARATION METHODS
+  // -------------------
   cmp(r) {
     if (!(r instanceof Rational)) return NaN;
     let lcm = Rational.lcm(this.b, r.b);
@@ -297,6 +303,10 @@ class Rational {
     return this.a / this.b;
   }
 
+
+
+ // GETTER METHODS
+ // --------------
   get sgn() {
     return this.a < 0 : -1 : 1;
   }
