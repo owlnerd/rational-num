@@ -107,12 +107,12 @@ class Rational {
   // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIONAL NUMBER OBJEST FROM
   // PASSED DECIMAL val.
   // EXAMPLES:
-  //   - let a = Rational.decToFrac(1.8);
-  //   - let b = Rational.decToFrac(0.125);
-  //   - let c = Rational.decToFrac(15);
-  //   - let d = Rational.decToFrac(.95);
+  //   - let a = Rational.dtof(1.8);
+  //   - let b = Rational.dtof(0.125);
+  //   - let c = Rational.dtof(15);
+  //   - let d = Rational.dtof(.95);
   // -------------------------------------------------------------------
-  static decToFrac(d) {
+  static dtof(d) {
     if (typeof d != "number") {
       console.log("ERROR! NUMBER REQUIRED");
       return NaN;
@@ -134,11 +134,11 @@ class Rational {
   // CONSTRUCTOR FACTORY FUNCTION | CREATES A Rational NUMBER OBJECT FROM
   // PASSED STRING
   // EXAMPLES:
-  //   - let a = Rational.strToFrac("2/3");
-  //   - let b = Rational.strToFrac("-  2/  3");
-  //   - let c = Rational.strToFrac("+2/ -    3");
+  //   - let a = Rational.stof("2/3");
+  //   - let b = Rational.stof("-  2/  3");
+  //   - let c = Rational.stof("+2/ -    3");
   // --------------------------------------------------------------------
-  static strToFrac(s) {
+  static stof(s) {
     let sliced = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/.exec(s);
     if (!sliced) {
       console.log("ERROR! INCORRECT STRING FRACTION FORMAT");
@@ -165,17 +165,22 @@ class Rational {
       let r1;
       let r2;
 
-      if (isNaN(arg1)) r1 = Rational.strToFrac(arg1);
-      else r1 = Rational.decToFrac(Number(arg1));
-      if (isNaN(arg2)) r2 = Rational.strToFrac(arg2);
-      else r2 = Rational.decToFrac(Number(arg2));
+      if (isNaN(arg1))
+        r1 = Rational.stof(arg1);
+      else
+        r1 = Rational.dtof(Number(arg1));
+      if (isNaN(arg2))
+        r2 = Rational.stof(arg2);
+      else
+        r2 = Rational.dtof(Number(arg2));
 
-      if (!(r1 instanceof Rational) && !(r2 instanceof Rational)) return NaN;
+      if (!(r1 instanceof Rational) || !(r2 instanceof Rational))
+        return NaN;
       return r1.div(r2);
     }
 
-    if (!isNaN(arg1)) return Rational.decToFrac(Number(arg1));
-    else return Rational.strToFrac(arg1);
+    return !isNaN(arg1) ? Rational.dtof(Number(arg1)) :
+                          Rational.stof(arg1);
   }
 
 
@@ -356,11 +361,20 @@ class Rational {
 
 
 
-  // FORMAT METHOD
-  // -------------
-  // -------------
-  // -------------
-  // -------------
+  /*
+   * FORMAT METHOD
+   * Returns a string formatted according to pattern string passed as the
+   * argument. Function uses following template elements in order to insert
+   * the values of the Rational class instance:
+   *   - {{S}}  - inserts "-" if the number is negative, inserts empty string
+   *              if the number is positive.
+   *   - {{S+}} - inserts "-" if the fraction is negative, inserts "+" if the
+   *              fraction is positive (or zerko).
+   *   - {{M}}  - inserts the number of whole parts in case of a mixed number.
+   *   - {{N}}  - inserts the numerator value.
+   *   - {{D}}  - inserts the denominator value.
+   * -------------------------------------------------------------------------
+  */
   format(pattern = "{{S}}[{{M}}]{{N}}/{{D}}") {
     let sgn = this.a < 0 ? "-" : "+";
     let mix = this.a / this.b;
