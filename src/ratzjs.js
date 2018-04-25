@@ -358,6 +358,9 @@ class Rational {
 
   // FORMAT METHOD
   // -------------
+  // -------------
+  // -------------
+  // -------------
   format(pattern = "{{S}}[{{M}}]{{N}}/{{D}}") {
     let sgn = this.a < 0 ? "-" : "+";
     let mix = this.a / this.b;
