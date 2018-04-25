@@ -1,4 +1,4 @@
-# ratz-js
+# rational-num
 *During a heated discussion, i told Pi to be rational... to what Pi replied:
 "get real".*
 ## Short description
