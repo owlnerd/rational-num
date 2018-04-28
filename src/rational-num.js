@@ -2,8 +2,12 @@ class Rational {
 
 
 
-  // MAIN CONSTRUCTOR | SHOULD NOT BE USED! USE FACTORY FUNCTIONS INSTEAD!
-  // ---------------------------------------------------------------------
+  /*
+   * --------------------------------------------------
+   * MAIN CONSTRUCTOR
+   * Should not be used. Use factory functions instead.
+   * --------------------------------------------------
+  */
   constructor(a, b) {
     this.a = a / Rational.gcd(a, b);
     this.b = b / (a / this.a);
@@ -18,12 +22,15 @@ class Rational {
 
 
 
-  // BASIC CONSTRUCTOR FACTORY FUNCTION
-  // EXAMPLES:
-  //   - let a = Rational.construct(3, 5);
-  //   - let b = Rational.construct(1, 2);
-  //   - let c = Rational.construct(0, 1);
-  // -------------------------------------
+  /*
+   * -------------------------------------
+   * BASIC CONSTRUCTOR FACTORY FUNCTION
+   * EXAMPLES:
+   *   let a = Rational.construct(3, 5);
+   *   let b = Rational.construct(1, 2);
+   *   let c = Rational.construct(0, 1);
+   * -------------------------------------
+  */
   static construct(a, b) {
     if (b === 0) {
       console.log("ERROR! DENOMINATOR CANNOT BE ZERO");
@@ -34,8 +41,11 @@ class Rational {
 
 
 
-  // GCD (greatest common divisor) STATIC METHOD
-  // -------------------------------------------
+  /*
+   * -------------------------------------------
+   * GCD (greatest common divisor) STATIC METHOD
+   * -------------------------------------------
+  */
   static gcd(a, b) {
     while (b != 0) {
       let tmp = b;
@@ -47,8 +57,11 @@ class Rational {
 
 
 
-  // LCM (least common multiple) STATIC METHOD
-  // -----------------------------------------
+  /*
+   * -----------------------------------------
+   * LCM (least common multiple) STATIC METHOD
+   * -----------------------------------------
+  */
   static lcm(a, b) {
     let gcd = Rational.gcd(a, b);
     // this is 100% valid and will result with integer as gcd(a,b)|a
@@ -57,10 +70,14 @@ class Rational {
 
 
 
-  // GENERATES A RANDOM FRACTION WITH DENOMINATOR IN GIVEN RANGE
-  // GENERATED FRACTION WILL BE in the form:
-  //   (0, p-1)/(1, p)
-  // -----------------------------------------------------------
+  /*
+   * ----------------------------------------------------------------
+   * RNDFRAC METHOD
+   * Generates a random fraction (real fraction, not a mixed number).
+   * Generated fraction will be in the form:
+   *   [0, p-1] / [1, p]
+   * ----------------------------------------------------------------
+  */
   static rndFrac(p = 100) {
     // Can d ever be 0 ??? Inspect this in depth
     let d = Math.floor(Math.random() * p) + 1;
@@ -70,8 +87,11 @@ class Rational {
 
 
 
-  // REDUCES THE FRACTION (normalizes it)
-  // ------------------------------------
+  /*
+   * ------------------------------------
+   * REDUCES THE FRACTION (normalizes it)
+   * ------------------------------------
+  */
   static reduce(r) {
     let g = Rational.gcd(r.a, r.b);
     r.a /= g;
@@ -87,8 +107,11 @@ class Rational {
 
 
 
-  // RETURNS A NEGATIVE OF PASSED ARGUMENT
-  // -------------------------------------
+  /*
+   * -------------------------------------
+   * RETURNS A NEGATIVE OF PASSED ARGUMENT
+   * -------------------------------------
+  */
   static negate(r) {
     if (!(r instanceof Rational)) return NaN;
     return Rational.construct(-r.a, r.b);
@@ -96,22 +119,28 @@ class Rational {
 
 
 
-  // NEGATES THE ARGUMENT
-  // --------------------
+  /*
+   * --------------------
+   * NEGATES THE ARGUMENT
+   * --------------------
+  */
   static negatein(r) {
     r.a = -r.a;
   }
 
 
 
-  // CONSTRUCTOR FACTORY FUNCTION | CREATES A RATIONAL NUMBER OBJEST FROM
-  // PASSED DECIMAL val.
-  // EXAMPLES:
-  //   - let a = Rational.dtof(1.8);
-  //   - let b = Rational.dtof(0.125);
-  //   - let c = Rational.dtof(15);
-  //   - let d = Rational.dtof(.95);
-  // -------------------------------------------------------------------
+  /*
+   * ----------------------------------------------------------
+   * CONSTRUCTOR FACTORY FUNCTION
+   * Creates Rational number object from passed decimal number.
+   * EXAMPLES:
+   *   - let a = Rational.dtof(1.8);
+   *   - let b = Rational.dtof(0.125);
+   *   - let c = Rational.dtof(15);
+   *   - let d = Rational.dtof(.95);
+   * ----------------------------------------------------------
+  */
   static dtof(d) {
     if (typeof d != "number") {
       console.log("ERROR! NUMBER REQUIRED");
@@ -131,13 +160,16 @@ class Rational {
 
 
 
-  // CONSTRUCTOR FACTORY FUNCTION | CREATES A Rational NUMBER OBJECT FROM
-  // PASSED STRING
-  // EXAMPLES:
-  //   - let a = Rational.stof("2/3");
-  //   - let b = Rational.stof("-  2/  3");
-  //   - let c = Rational.stof("+2/ -    3");
-  // --------------------------------------------------------------------
+  /*
+   * --------------------------------------------------------------------
+   * CONSTRUCTOR FACTORY FUNCTION
+   * Creates a Rational number object from passed string
+   * EXAMPLES:
+   *   - let a = Rational.stof("2/3");
+   *   - let b = Rational.stof("-  2/  3");
+   *   - let c = Rational.stof("+2/ -    3");
+   * --------------------------------------------------------------------
+  */
   static stof(s) {
     let sliced = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/.exec(s);
     if (!sliced) {
@@ -151,15 +183,19 @@ class Rational {
 
 
 
-  // CONSTRUCTOR FACTORY FUNCTION | CREATES A Rational NUMBER OBJECT FROM
-  // ANYTHING COMPATIBLE. TAKES AN OPTIONAL SECOND ARGUMENT.
-  // EXAMPLES:
-  //   - let a = Rational.create("1.25");
-  //   - let b = Rational.create(0.05);
-  //   - let c = Rational.create("5/-3");
-  //   - let d = Rational.create("1/2", 0.125);
-  //   - let e = Rational.create("3.5", "-2/3");
-  // --------------------------------------------------------------------
+  /*
+   * --------------------------------------------------------------------
+   * CONSTRUCTOR FACTORY FUNCTION
+   * Creates a Rational number object from anything compatible. Takes an
+   * optional second argument.
+   * EXAMPLES:
+   *   let a = Rational.create("1.25");
+   *   let b = Rational.create(0.05);
+   *   let c = Rational.create("5/-3");
+   *   let d = Rational.create("1/2", 0.125);
+   *   let e = Rational.create("3.5", "-2/3");
+   * --------------------------------------------------------------------
+  */
   static create(arg1, arg2 = null) {
     if (arg2 !== null) {
       let r1;
@@ -185,17 +221,20 @@ class Rational {
 
 
 
-  // FRACTIONAL NUMBERS CALCULATIONS METHODS
-  // MOST METHODS HAVE TWO VERSIONS: FRUITFUL AND IN PLACE
-  // ALL IN PLACE METHODS ARE SUFFIXED BY "in"
-  // EXAMPLES:
-  //   let a = Rational.create("1/2");
-  //   let b = Rational.create("1/4");
-  //   let c = a.add(b);
-  //   console.log(`a: ${a} , c: ${c}`);  (output)=> a: 1/2 , c: 3/4
-  //   a.addin(b);
-  //   console.log(`a: ${a} , c: ${c}`);  (output)=> a: 3/4 , c: 3/4
-  // ----------------------------------------------------------------
+  /*
+   * ----------------------------------------------------------------
+   * FRACTIONAL NUMBERS CALCULATIONS METHODS
+   * Most methods have two versions: fruitful and in place
+   * All inplace methods are suffixed by "in"
+   * EXAMPLES:
+   *   let a = Rational.create("1/2");
+   *   let b = Rational.create("1/4");
+   *   let c = a.add(b);
+   *   console.log(`a: ${a} , c: ${c}`);  (output)=> a: 1/2 , c: 3/4
+   *   a.addin(b);
+   *   console.log(`a: ${a} , c: ${c}`);  (output)=> a: 3/4 , c: 3/4
+   * ----------------------------------------------------------------
+  */
   add(r) {
     if (!(r instanceof Rational)) return NaN;
     let d = Rational.lcm(this.b, r.b);
@@ -271,8 +310,11 @@ class Rational {
 
 
 
-  // COMPARATION METHODS
-  // -------------------
+  /*
+   * -------------------
+   * COMPARATION METHODS
+   * -------------------
+  */
   cmp(r) {
     if (!(r instanceof Rational)) return NaN;
     let lcm = Rational.lcm(this.b, r.b);
@@ -311,8 +353,11 @@ class Rational {
 
 
 
- // GETTER METHODS
- // --------------
+  /*
+   * --------------
+   * GETTER METHODS
+   * --------------
+  */
   get sgn() {
     return this.a < 0 ? -1 : 1;
   }
@@ -336,8 +381,11 @@ class Rational {
 
 
 
-  // TO STRING METHOD
-  // ----------------
+  /*
+   * ----------------
+   * TO STRING METHOD
+   * ----------------
+  */
   toString(mixed = false) {
     if (this.a === 0) {
       return "0";
@@ -362,14 +410,15 @@ class Rational {
 
 
   /*
+   * -------------------------------------------------------------------------
    * FORMAT METHOD
    * Returns a string formatted according to pattern string passed as the
    * argument. Function uses following template elements in order to insert
    * the values of the Rational class instance:
-   *   - {{S}}  - inserts "-" if the number is negative, inserts empty string
+   *   - {{S}}  - inserts "-" if the fraction is negative, inserts empty string
    *              if the number is positive.
    *   - {{S+}} - inserts "-" if the fraction is negative, inserts "+" if the
-   *              fraction is positive (or zerko).
+   *              fraction is positive (or zero).
    *   - {{M}}  - inserts the number of whole parts in case of a mixed number.
    *   - {{N}}  - inserts the numerator value.
    *   - {{D}}  - inserts the denominator value.
