@@ -61,10 +61,18 @@ class Rational {
 
 
 
+  /*
+   * -------------------------------------------------------------------
+   * STATIC METHOD - verifyRationalArgument
+   * Verifies that the first argument is an instance of class Rational.
+   * Othervise, throws new NotInstanceOfRationalError exception wit it's
+   * second argument as message.
+   * -------------------------------------------------------------------
+  */
   static verifyRationalArgument(arg, m) {
     if (!(arg instanceof Rational))
       throw new NotInstanceOfRationalError(
-        "agrument to '" + m + "' not Rational"
+        "agrument to '" + m + "' not instance of Rational"
       );
   }
 
@@ -81,7 +89,8 @@ class Rational {
   */
   static construct(a, b) {
     if (!Number.isInteger(a) || !Number.isInteger(b)) {
-      throw new NotIntegerError("arguments to 'construct' not integers")
+      throw new NotIntegerError(
+        "arguments to 'construct' not integers");
     }
     if (b === 0) {
       throw new ZeroDenominatorError(
@@ -94,9 +103,10 @@ class Rational {
 
 
   /*
-   * -------------------------------------------
-   * GCD (greatest common divisor) STATIC METHOD
-   * -------------------------------------------
+   * ------------------------------------------------------------------
+   * STATIC METHOD - gcd
+   * Calculates the greatest common denominator of a and b (gcd(a, b)).
+   * ------------------------------------------------------------------
   */
   static gcd(a, b) {
     while (b != 0) {
@@ -110,13 +120,13 @@ class Rational {
 
 
   /*
-   * -----------------------------------------
-   * LCM (least common multiple) STATIC METHOD
-   * -----------------------------------------
+   * ------------------------------------------------------------
+   * STATIC METHOD - lcm
+   * Calculates the least common multiple of a and b (lcm(a, b)).
+   * ------------------------------------------------------------
   */
   static lcm(a, b) {
     let gcd = Rational.gcd(a, b);
-    // this is 100% valid and will result with integer as gcd(a,b)|a
     return (a / gcd) * b;
   }
 
@@ -124,7 +134,7 @@ class Rational {
 
   /*
    * ----------------------------------------------------------------
-   * RNDFRAC METHOD
+   * STATIC METHOD - rndFrac
    * Generates a random fraction (real fraction, not a mixed number).
    * Generated fraction will be in the form:
    *   [0, p-1] / [1, p]
@@ -143,9 +153,10 @@ class Rational {
 
 
   /*
-   * ------------------------------------
-   * REDUCES THE FRACTION (normalizes it)
-   * ------------------------------------
+   * -------------------------------------
+   * STATIC METHOD - reduce
+   * Reduces the fraction (normalizes it).
+   * -------------------------------------
   */
   static reduce(r) {
     Rational.verifyRationalArgument(r, "reduce");
@@ -164,9 +175,10 @@ class Rational {
 
 
   /*
-   * -------------------------------------
-   * RETURNS A NEGATIVE OF PASSED ARGUMENT
-   * -------------------------------------
+   * ----------------------------------------------------
+   * STATIC METHOD - negate
+   * Returns the negative of fraction passed as argument.
+   * ----------------------------------------------------
   */
   static negate(r) {
     Rational.verifyRationalArgument(r, "negate");
@@ -176,9 +188,10 @@ class Rational {
 
 
   /*
-   * --------------------
-   * NEGATES THE ARGUMENT
-   * --------------------
+   * --------------------------
+   * STATIC METHOD - negatein
+   * Inplace version of negate.
+   * --------------------------
   */
   static negatein(r) {
     r.a = -r.a;
@@ -217,7 +230,7 @@ class Rational {
   /*
    * --------------------------------------------------------------------
    * CONSTRUCTOR FACTORY FUNCTION
-   * Creates a Rational number object from passed string
+   * Creates a Rational number object from passed string.
    * EXAMPLES:
    *   - let a = Rational.stof("2/3");
    *   - let b = Rational.stof("-  2/  3");
@@ -225,13 +238,13 @@ class Rational {
    * --------------------------------------------------------------------
   */
   static stof(s) {
-    let sliced = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/.exec(s);
-    if (!sliced)
+    let slice = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/.exec(s);
+    if (!slice)
       throw new RationalNumFormatError(
         "argument to 'stof' incorrectly formatted"
       );
-    let a = sliced[1] == "-" ? -Number(sliced[2]) : Number(sliced[2]);
-    let b = sliced[3] == "-" ? -Number(sliced[4]) : Number(sliced[4]);
+    let a = slice[1] == "-" ? -Number(slice[2]) : Number(slice[2]);
+    let b = slice[3] == "-" ? -Number(slice[4]) : Number(slice[4]);
     return Rational.construct(a, b);
   }
 
@@ -278,8 +291,8 @@ class Rational {
   /*
    * ----------------------------------------------------------------
    * FRACTIONAL NUMBERS CALCULATIONS METHODS
-   * Most methods have two versions: fruitful and in place
-   * All inplace methods are suffixed by "in"
+   * Most methods have two versions: fruitful and in place.
+   * All inplace methods are suffixed by "in".
    * EXAMPLES:
    *   let a = Rational.create("1/2");
    *   let b = Rational.create("1/4");
@@ -503,6 +516,21 @@ class Rational {
 
   get denom() {
     return this.b;
+  }
+
+
+
+  /*
+   * --------------
+   * STATIC GETTERS
+   * --------------
+  */
+  static get zero() {
+    return Rational.construct(0, 1);
+  }
+
+  static get unit() {
+    return Rational.construct(1, 1);
   }
 
 
