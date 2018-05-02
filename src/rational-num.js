@@ -589,8 +589,8 @@ class Rational {
     let sgn = this.a < 0 ? "-" : "+";
     let mix = this.a / this.b;
     mix = mix < 0 ? Math.abs(Math.ceil(mix)) : Math.floor(mix);
-    let num = /{{M}}/.test(pattern) ? (mix == 0 ? this.a : this.a % this.b) :
-                                    this.a;
+    let num = /{{M}}/.test(pattern) ? (mix == 0 ? this.a : this.a % this.b)
+                                    : this.a;
     if (/{{S}}|{{S\+}}/.test(pattern)) num = Math.abs(num);
 
     let re = /{{S}}|{{S\+}}|{{M}}|{{N}}|{{D}}/g;

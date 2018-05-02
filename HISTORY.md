@@ -1,6 +1,13 @@
 # versions
 A version log. Newest version listed first.
 
+## v0.3.1 -- (2018-05-02)
+Changes:
+* implemented static getter 'zero' which returns 0/1
+* implemented static getter 'unit' which returns 1/1
+* minor functionality fixes
+* minor comments styling fixes
+
 ## v0.2.0 -- (2018-05-02)
 Implemented:
 * custom exceptions and error management
