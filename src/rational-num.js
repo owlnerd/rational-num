@@ -217,7 +217,7 @@ class Rational {
     let s = Math.abs(d).toString().split(".");
     if (s.length == 1)
       return sign ? Rational.construct(Number(s[0]), 1) :
-                    Rational.negate(Rational(Number(s[0]), 1));
+                    Rational.negate(Rational.construct(Number(s[0]), 1));
     else {
       let r1 = Rational.construct(Number(s[0]), 1);
       let r2 = Rational.construct(Number(s[1]), Math.pow(10, s[1].length));
@@ -238,14 +238,24 @@ class Rational {
    * --------------------------------------------------------------------
   */
   static stof(s) {
-    let slice = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/.exec(s);
-    if (!slice)
+    let dec = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/;
+    let ptrnDec = /^\s*([+-]?)\s*(\d*)\s*\.\s*(\d*)\s*\[\s*(\d+)\s*$/;
+    let slices;
+
+    if (slices = dec.exec(s)) {
+      let a = slices[1] == "-" ? -Number(slices[2]) : Number(slices[2]);
+      let b = slices[3] == "-" ? -Number(slices[4]) : Number(slices[4]);
+      return Rational.construct(a, b);
+    } else if (slices = ptrnDec.exec(s)) {
+      // TO IMPLEMENT
+      console.log("pattern matched - implementation pending");
+      return null;
+    } else {
       throw new RationalNumFormatError(
         "argument to 'stof' incorrectly formatted"
       );
-    let a = slice[1] == "-" ? -Number(slice[2]) : Number(slice[2]);
-    let b = slice[3] == "-" ? -Number(slice[4]) : Number(slice[4]);
-    return Rational.construct(a, b);
+    }
+
   }
 
 
