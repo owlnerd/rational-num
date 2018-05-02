@@ -609,4 +609,4 @@ class Rational {
 
 
 
-//module.exports = Rational;
+module.exports = Rational;
