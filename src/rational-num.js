@@ -1,3 +1,42 @@
+class NotInstanceOfRationalError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "NotInstanceOfRationalError";
+  }
+}
+class ZeroDenominatorError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "ZeroDenominatorError";
+  }
+}
+class NotIntegerError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "NotIntegerError";
+  }
+}
+class NotPositiveIntegerError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "NotPositiveIntegerError";
+  }
+}
+class NotNumberError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "NotNumberError";
+  }
+}
+class RationalNumFormatError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "RationalNumFormatError";
+  }
+}
+
+
+
 class Rational {
 
 
@@ -22,6 +61,15 @@ class Rational {
 
 
 
+  static verifyRationalArgument(arg, m) {
+    if (!(arg instanceof Rational))
+      throw new NotInstanceOfRationalError(
+        "agrument to '" + m + "' not Rational"
+      );
+  }
+
+
+
   /*
    * -------------------------------------
    * BASIC CONSTRUCTOR FACTORY FUNCTION
@@ -32,9 +80,13 @@ class Rational {
    * -------------------------------------
   */
   static construct(a, b) {
+    if (!Number.isInteger(a) || !Number.isInteger(b)) {
+      throw new NotIntegerError("arguments to 'construct' not integers")
+    }
     if (b === 0) {
-      console.log("ERROR! DENOMINATOR CANNOT BE ZERO");
-      return NaN;
+      throw new ZeroDenominatorError(
+        "zero denominator - second argument to 'construct' is zero"
+      );
     }
     return new Rational(a, b);
   }
@@ -79,7 +131,10 @@ class Rational {
    * ----------------------------------------------------------------
   */
   static rndFrac(p = 100) {
-    // Can d ever be 0 ??? Inspect this in depth
+    if (!Number.isInteger(p) || p < 1)
+      throw new NotPositiveIntegerError(
+        "argument to 'rndFrac' not positive integer"
+      );
     let d = Math.floor(Math.random() * p) + 1;
     let n = Math.floor(Math.random() * d);
     return Rational.construct(n, d);
@@ -93,6 +148,7 @@ class Rational {
    * ------------------------------------
   */
   static reduce(r) {
+    Rational.verifyRationalArgument(r, "reduce");
     let g = Rational.gcd(r.a, r.b);
     r.a /= g;
     r.b /= g;
@@ -113,7 +169,7 @@ class Rational {
    * -------------------------------------
   */
   static negate(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "negate");
     return Rational.construct(-r.a, r.b);
   }
 
@@ -142,10 +198,8 @@ class Rational {
    * ----------------------------------------------------------
   */
   static dtof(d) {
-    if (typeof d != "number") {
-      console.log("ERROR! NUMBER REQUIRED");
-      return NaN;
-    }
+    if (typeof d != "number")
+      throw new NotNumberError("argument to 'dtof' not a number");
     let sign = d < 0 ? 0 : 1;
     let s = Math.abs(d).toString().split(".");
     if (s.length == 1)
@@ -172,10 +226,10 @@ class Rational {
   */
   static stof(s) {
     let sliced = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/.exec(s);
-    if (!sliced) {
-      console.log("ERROR! INCORRECT STRING FRACTION FORMAT");
-      return NaN;
-    }
+    if (!sliced)
+      throw new RationalNumFormatError(
+        "argument to 'stof' incorrectly formatted"
+      );
     let a = sliced[1] == "-" ? -Number(sliced[2]) : Number(sliced[2]);
     let b = sliced[3] == "-" ? -Number(sliced[4]) : Number(sliced[4]);
     return Rational.construct(a, b);
@@ -242,12 +296,12 @@ class Rational {
    * --------
   */
   add(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "add");
     let d = Rational.lcm(this.b, r.b);
     return Rational.construct(this.a * (d / this.b) + r.a * (d / r.b), d);
   }
   addin(r) { // in place addition
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "addin");
     let d = Rational.lcm(this.b, r.b);
     this.a = this.a * (d / this.b) + r.a * (d / r.b);
     this.b = d;
@@ -273,11 +327,11 @@ class Rational {
    * --------------
   */
   mul(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "mul");
     return Rational.construct(this.a * r.a, this.b * r.b);
   }
   mulin(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "mulin");
     this.a *= r.a;
     this.b *= r.b;
     Rational.reduce(this);
@@ -289,11 +343,11 @@ class Rational {
    * --------
   */
   div(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "div");
     return this.mul(r.reciprocal());
   }
   divin(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "divin");
     this.mulin(r.reciprocal());
     Rational.reduce(this);
   }
@@ -343,8 +397,10 @@ class Rational {
    * ----------------------------------------------------
   */
   pow(p) {
+    if (!Number.isInteger(p))
+      throw new NotIntegerError ("argument to 'pow' not an integer");
     if (p < 0) {
-      return Rational.construct(Math.pow(this.b, -p), Math.pow(this.a, -p))
+      return Rational.construct(Math.pow(this.b, -p), Math.pow(this.a, -p));
     }
     return Rational.construct(Math.pow(this.a, p), Math.pow(this.b, p));
   }
@@ -355,9 +411,25 @@ class Rational {
    * ----------------------------
   */
   round(d) {
+    if (!Number.isInteger(d)) {
+      throw new NotIntegerError("argument to 'round' not integer");
+    }
+    if (d === 0) {
+      throw new ZeroDenominatorError(
+        "zero denominator - argument to 'round' is zero"
+      );
+    }
     return Rational.construct(Math.round((this.a * d) / this.b), d);
   }
   roundin(d) {
+    if (!Number.isInteger(d)) {
+      throw new NotIntegerError("argument to 'roundin' not integer");
+    }
+    if (d === 0) {
+      throw new ZeroDenominatorError(
+        "zero denominator - argument to 'roundin' is zero"
+      );
+    }
     this.a = Math.round((this.a * d) / this.b);
     this.b = d;
   }
@@ -370,34 +442,34 @@ class Rational {
    * -------------------
   */
   cmp(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "cmp");
     let lcm = Rational.lcm(this.b, r.b);
     let cmp = this.a * (lcm / this.b) - r.a * (lcm / r.b);
     return cmp != 0 ? (cmp < 0 ? -1 : 1) : 0;
   }
 
   eq(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "eq");
     return this.cmp(r) == 0 ? true : false;
   }
 
   isGreater(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "isGreater");
     return this.cmp(r) > 0 ? true : false;
   }
 
   isGreaterOrEqual(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "isGreaterOrEqual");
     return this.isGreater(r) || this.eq(r);
   }
 
   isLess(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "isLess");
     return this.cmp(r) < 0 ? true : false;
   }
 
   isLessOrEqual(r) {
-    if (!(r instanceof Rational)) return NaN;
+    Rational.verifyRationalArgument(r, "isLessOrEqual");
     return this.isLess(r) || this.eq(r);
   }
 
@@ -508,4 +580,5 @@ class Rational {
 } // :~
 
 
-module.exports = Rational;
+
+//module.exports = Rational;
