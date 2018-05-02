@@ -235,6 +235,12 @@ class Rational {
    *   console.log(`a: ${a} , c: ${c}`);  (output)=> a: 3/4 , c: 3/4
    * ----------------------------------------------------------------
   */
+
+  /*
+   * --------
+   * ADDITION
+   * --------
+  */
   add(r) {
     if (!(r instanceof Rational)) return NaN;
     let d = Rational.lcm(this.b, r.b);
@@ -248,6 +254,11 @@ class Rational {
     Rational.reduce(this);
   }
 
+  /*
+   * -----------
+   * SUBTRACTION
+   * -----------
+  */
   sub(r) {
     return this.add(Rational.negate(r));
   }
@@ -256,6 +267,11 @@ class Rational {
     Rational.reduce(this);
   }
 
+  /*
+   * --------------
+   * MULTIPLICATION
+   * --------------
+  */
   mul(r) {
     if (!(r instanceof Rational)) return NaN;
     return Rational.construct(this.a * r.a, this.b * r.b);
@@ -267,6 +283,11 @@ class Rational {
     Rational.reduce(this);
   }
 
+  /*
+   * --------
+   * DIVISION
+   * --------
+  */
   div(r) {
     if (!(r instanceof Rational)) return NaN;
     return this.mul(r.reciprocal());
@@ -277,6 +298,11 @@ class Rational {
     Rational.reduce(this);
   }
 
+  /*
+   * ----------------------
+   * MULTIPLICATIVE INVERSE
+   * ----------------------
+  */
   inv() {
     return Rational.construct(this.b, this.a);
   }
@@ -287,6 +313,11 @@ class Rational {
     Rational.reduce(this);
   }
 
+  /*
+   * ----------------
+   * ADDITIVE INVERSE
+   * ----------------
+  */
   opposite() {
     return Rational.negate(this);
   }
@@ -294,6 +325,11 @@ class Rational {
     Rational.negatein(this);
   }
 
+  /*
+   * --------------------------------------------------
+   * RECIPROCAL VALUE -- SAME AS MULTIPLICATIVE INVERSE
+   * --------------------------------------------------
+  */
   reciprocal() {
     return this.inv();
   }
@@ -301,11 +337,29 @@ class Rational {
     this.invin();
   }
 
+  /*
+   * ----------------------------------------------------
+   * POWER -- CURRENTLY SUPPORTING ONLY INTEGER EXPONENTS
+   * ----------------------------------------------------
+  */
   pow(p) {
     if (p < 0) {
       return Rational.construct(Math.pow(this.b, -p), Math.pow(this.a, -p))
     }
     return Rational.construct(Math.pow(this.a, p), Math.pow(this.b, p));
+  }
+
+  /*
+   * ----------------------------
+   * ROUNDING TO NEAREST FRACTION
+   * ----------------------------
+  */
+  round(d) {
+    return Rational.construct(Math.round((this.a * d) / this.b), d);
+  }
+  roundin(d) {
+    this.a = Math.round((this.a * d) / this.b);
+    this.b = d;
   }
 
 
@@ -384,6 +438,13 @@ class Rational {
   /*
    * ----------------
    * TO STRING METHOD
+   * Returns a string representation of a rational number in fractional form.
+   * Accepts an optional boolean argument (defaulting to false). If set to true
+   * outputs a fraction in form of mixed number.
+   * EXAMPLE:
+   *   let a = Rational.create("16/5");
+   *   a.toString();  (output)=> "16/5"
+   *   a.toString(true);  (output)=> a: "1|1/5"
    * ----------------
   */
   toString(mixed = false) {
@@ -445,3 +506,6 @@ class Rational {
 
 
 } // :~
+
+
+module.exports = Rational;
