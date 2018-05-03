@@ -63,16 +63,16 @@ class Rational {
 
   /*
    * -------------------------------------------------------------------
-   * STATIC METHOD - verifyRationalArgument
-   * Verifies that the first argument is an instance of class Rational.
+   * STATIC METHOD - verArg
+   * Verifies that the first argument is an instance of second ragument.
    * Othervise, throws new NotInstanceOfRationalError exception wit it's
    * second argument as message.
    * -------------------------------------------------------------------
   */
-  static verifyRationalArgument(arg, m) {
-    if (!(arg instanceof Rational))
+  static verArg(arg, inst, m) {
+    if (!(arg instanceof inst))
       throw new NotInstanceOfRationalError(
-        "agrument to '" + m + "' not instance of Rational"
+        "agrument to '" + m + "' not instance of " + inst.name
       );
   }
 
@@ -159,7 +159,7 @@ class Rational {
    * -------------------------------------
   */
   static reduce(r) {
-    Rational.verifyRationalArgument(r, "reduce");
+    Rational.verArg(r, Rational, "reduce");
     let g = Rational.gcd(r.a, r.b);
     r.a /= g;
     r.b /= g;
@@ -181,7 +181,7 @@ class Rational {
    * ----------------------------------------------------
   */
   static negate(r) {
-    Rational.verifyRationalArgument(r, "negate");
+    Rational.verArg(r, Rational, "negate");
     return Rational.construct(-r.a, r.b);
   }
 
@@ -227,6 +227,7 @@ class Rational {
 
 
 
+
   /*
    * --------------------------------------------------------------------
    * CONSTRUCTOR FACTORY FUNCTION
@@ -238,7 +239,7 @@ class Rational {
    * --------------------------------------------------------------------
   */
   static stof(s) {
-    let dec = /^\s*([+-]?)\s*(\d+)\s*\/\s*([+-]?)\s*(\d+)\s*$/;
+    let dec = /^\s*([+-]?)\s*(\d+)\s*[\/\:]\s*([+-]?)\s*(\d+)\s*$/;
     let ptrnDec = /^\s*([+-]?)\s*(\d*)\s*\.\s*(\d*)\s*\[\s*(\d+)\s*$/;
     let slices;
 
@@ -246,11 +247,45 @@ class Rational {
       let a = slices[1] == "-" ? -Number(slices[2]) : Number(slices[2]);
       let b = slices[3] == "-" ? -Number(slices[4]) : Number(slices[4]);
       return Rational.construct(a, b);
-    } else if (slices = ptrnDec.exec(s)) {
-      // TO IMPLEMENT
-      console.log("pattern matched - implementation pending");
-      return null;
-    } else {
+    }
+
+    else if (slices = ptrnDec.exec(s)) {
+      // // TO IMPLEMENT
+      // console.log("pattern matched - implementation pending");
+      // return null;
+      let sign = slices[1];
+      let whole = slices[2];
+      let dec = slices[3];
+      let ptrn = slices[4];
+
+      // console.log(`
+      //   sign: ${sign},
+      //   whole: ${whole},
+      //   dec: ${dec},
+      //   ptrn: ${ptrn}`);
+
+      if (/0+/.test(whole)) whole = "";
+      whole += (dec + ptrn);
+      let totalOffset = dec.length + ptrn.length;
+      let ptrnOffset = ptrn.length;
+      // if (dec == "") dec = "0";
+      // console.log(`
+      //   sign: ${sign},
+      //   whole: ${whole},
+      //   dec: ${dec},
+      //   ptrn: ${ptrn}`);
+      whole = parseInt(whole) - parseInt(slices[2] + dec);
+      // console.log(`
+      //   sign: ${sign},
+      //   whole: ${whole},
+      //   dec: ${dec},
+      //   ptrn: ${ptrn}`);
+      let brojilac = sign == '-' ? -whole : whole;
+      let imenilac = Math.pow(10, totalOffset) - Math.pow(10, totalOffset - ptrnOffset);
+      return Rational.construct(brojilac, imenilac);
+    }
+
+    else {
       throw new RationalNumFormatError(
         "argument to 'stof' incorrectly formatted"
       );
@@ -319,12 +354,12 @@ class Rational {
    * --------
   */
   add(r) {
-    Rational.verifyRationalArgument(r, "add");
+    Rational.verArg(r, Rational, "add");
     let d = Rational.lcm(this.b, r.b);
     return Rational.construct(this.a * (d / this.b) + r.a * (d / r.b), d);
   }
   addin(r) { // in place addition
-    Rational.verifyRationalArgument(r, "addin");
+    Rational.verArg(r, Rational, "addin");
     let d = Rational.lcm(this.b, r.b);
     this.a = this.a * (d / this.b) + r.a * (d / r.b);
     this.b = d;
@@ -350,11 +385,11 @@ class Rational {
    * --------------
   */
   mul(r) {
-    Rational.verifyRationalArgument(r, "mul");
+    Rational.verArg(r, Rational, "mul");
     return Rational.construct(this.a * r.a, this.b * r.b);
   }
   mulin(r) {
-    Rational.verifyRationalArgument(r, "mulin");
+    Rational.verArg(r, Rational, "mulin");
     this.a *= r.a;
     this.b *= r.b;
     Rational.reduce(this);
@@ -366,11 +401,11 @@ class Rational {
    * --------
   */
   div(r) {
-    Rational.verifyRationalArgument(r, "div");
+    Rational.verArg(r, Rational, "div");
     return this.mul(r.reciprocal());
   }
   divin(r) {
-    Rational.verifyRationalArgument(r, "divin");
+    Rational.verArg(r, Rational, "divin");
     this.mulin(r.reciprocal());
     Rational.reduce(this);
   }
@@ -465,34 +500,34 @@ class Rational {
    * -------------------
   */
   cmp(r) {
-    Rational.verifyRationalArgument(r, "cmp");
+    Rational.verArg(r, Rational, "cmp");
     let lcm = Rational.lcm(this.b, r.b);
     let cmp = this.a * (lcm / this.b) - r.a * (lcm / r.b);
     return cmp != 0 ? (cmp < 0 ? -1 : 1) : 0;
   }
 
   eq(r) {
-    Rational.verifyRationalArgument(r, "eq");
+    Rational.verArg(r, Rational, "eq");
     return this.cmp(r) == 0 ? true : false;
   }
 
   isGreater(r) {
-    Rational.verifyRationalArgument(r, "isGreater");
+    Rational.verArg(r, Rational, "isGreater");
     return this.cmp(r) > 0 ? true : false;
   }
 
   isGreaterOrEqual(r) {
-    Rational.verifyRationalArgument(r, "isGreaterOrEqual");
+    Rational.verArg(r, Rational, "isGreaterOrEqual");
     return this.isGreater(r) || this.eq(r);
   }
 
   isLess(r) {
-    Rational.verifyRationalArgument(r, "isLess");
+    Rational.verArg(r, Rational, "isLess");
     return this.cmp(r) < 0 ? true : false;
   }
 
   isLessOrEqual(r) {
-    Rational.verifyRationalArgument(r, "isLessOrEqual");
+    Rational.verArg(r, Rational, "isLessOrEqual");
     return this.isLess(r) || this.eq(r);
   }
 
@@ -619,4 +654,4 @@ class Rational {
 
 
 
-//module.exports = Rational;
+module.exports = Rational;
