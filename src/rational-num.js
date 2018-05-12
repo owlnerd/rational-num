@@ -654,4 +654,14 @@ class Rational {
 
 
 
+function createDecimalStrings(quantity, range, fnc) {
+  let array = [];
+  for (let i = 0; i < quantity; i++) {
+    array.push(fnc(range));
+  }
+  return array;
+}
+
+
+
 module.exports = Rational;
