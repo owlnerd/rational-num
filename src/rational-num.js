@@ -243,47 +243,31 @@ class Rational {
     let ptrnDec = /^\s*([+-]?)\s*(\d*)\s*\.\s*(\d*)\s*\[\s*(\d+)\s*$/;
     let slices;
 
-    if (slices = dec.exec(s)) {
+    if (slices = s.match(dec)) {
       let a = slices[1] == "-" ? -Number(slices[2]) : Number(slices[2]);
       let b = slices[3] == "-" ? -Number(slices[4]) : Number(slices[4]);
       return Rational.construct(a, b);
     }
 
-    else if (slices = ptrnDec.exec(s)) {
-      // // TO IMPLEMENT
-      // console.log("pattern matched - implementation pending");
-      // return null;
+    else if (slices = s.match(ptrnDec)) {
       let sign = slices[1];
       let whole = slices[2];
       let dec = slices[3];
       let ptrn = slices[4];
 
-      // console.log(`
-      //   sign: ${sign},
-      //   whole: ${whole},
-      //   dec: ${dec},
-      //   ptrn: ${ptrn}`);
-
-      if (/0+/.test(whole)) whole = "";
+      if (/0+/.test(whole))
+        whole = "";
       whole += (dec + ptrn);
       let totalOffset = dec.length + ptrn.length;
       let ptrnOffset = ptrn.length;
-      // if (dec == "") dec = "0";
-      // console.log(`
-      //   sign: ${sign},
-      //   whole: ${whole},
-      //   dec: ${dec},
-      //   ptrn: ${ptrn}`);
-      whole = parseInt(whole) - parseInt(slices[2] + dec);
-      // console.log(`
-      //   sign: ${sign},
-      //   whole: ${whole},
-      //   dec: ${dec},
-      //   ptrn: ${ptrn}`);
+
+      let wholeSub = slices[2] + dec;
+      whole = parseInt(whole) - (wholeSub === '' ? 0 : parseInt(wholeSub));
+
       let brojilac = sign == '-' ? -whole : whole;
       let imenilac = Math.pow(10, totalOffset) - Math.pow(10, totalOffset - ptrnOffset);
       return Rational.construct(brojilac, imenilac);
-    }
+    } 
 
     else {
       throw new RationalNumFormatError(
@@ -651,16 +635,6 @@ class Rational {
 
 
 } // :~
-
-
-
-function createDecimalStrings(quantity, range, fnc) {
-  let array = [];
-  for (let i = 0; i < quantity; i++) {
-    array.push(fnc(range));
-  }
-  return array;
-}
 
 
 
