@@ -239,21 +239,21 @@ class Rational {
    * --------------------------------------------------------------------
   */
   static stof(s) {
-    let dec = /^\s*([+-]?)\s*(\d+)\s*[\/\:]\s*([+-]?)\s*(\d+)\s*$/;
-    let ptrnDec = /^\s*([+-]?)\s*(\d*)\s*\.\s*(\d*)\s*\[\s*(\d+)\s*$/;
-    let slices;
+    let frac = /^\s*([+-]?)\s*(\d+)\s*[\/\:]\s*([+-]?)\s*(\d+)\s*$/;
+    let decPtrn = /^\s*([+-]?)\s*(\d*)\s*\.\s*(\d*)\s*\[\s*(\d+)\s*$/;
+    let slc;
 
-    if (slices = s.match(dec)) {
-      let a = slices[1] == "-" ? -Number(slices[2]) : Number(slices[2]);
-      let b = slices[3] == "-" ? -Number(slices[4]) : Number(slices[4]);
+    if (slc = s.match(frac)) {
+      let a = slc[1] == "-" ? -Number(slc[2]) : Number(slc[2]);
+      let b = slc[3] == "-" ? -Number(slc[4]) : Number(slc[4]);
       return Rational.construct(a, b);
     }
 
-    else if (slices = s.match(ptrnDec)) {
-      let sign = slices[1];
-      let whole = slices[2];
-      let dec = slices[3];
-      let ptrn = slices[4];
+    else if (slc = s.match(decPtrn)) {
+      // slc[1] = sign
+      let whole = slc[2];
+      let dec = slc[3];
+      let ptrn = slc[4];
 
       if (/0+/.test(whole))
         whole = "";
@@ -261,10 +261,10 @@ class Rational {
       let totalOffset = dec.length + ptrn.length;
       let ptrnOffset = ptrn.length;
 
-      let wholeSub = slices[2] + dec;
+      let wholeSub = slc[2] + dec;
       whole = parseInt(whole) - (wholeSub === '' ? 0 : parseInt(wholeSub));
 
-      let brojilac = sign == '-' ? -whole : whole;
+      let brojilac = slc[1] == '-' ? -whole : whole;
       let imenilac = Math.pow(10, totalOffset) - Math.pow(10, totalOffset - ptrnOffset);
       return Rational.construct(brojilac, imenilac);
     } 
