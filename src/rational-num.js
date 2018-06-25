@@ -562,6 +562,22 @@ class Rational {
     return Rational.construct(1, 1);
   }
 
+  static get minPos() {
+    return Rational.construct(1, Number.MAX_SAFE_INTEGER);
+  }
+
+  static get maxPos() {
+    return Rational.construct(Number.MAX_SAFE_INTEGER, 1);
+  }
+
+  static get minNeg() {
+    return Rational.create(Number.MIN_SAFE_INTEGER, 1);
+  }
+
+  static get maxNeg() {
+    return Rational.create(1, Number.MIN_SAFE_INTEGER);
+  }
+
 
 
   /*
