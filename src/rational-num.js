@@ -126,8 +126,7 @@ class Rational {
    * ------------------------------------------------------------
   */
   static lcm(a, b) {
-    let gcd = Rational.gcd(a, b);
-    return (a / gcd) * b;
+    return (a / Rational.gcd(a, b)) * b;
   }
 
 
@@ -267,7 +266,7 @@ class Rational {
       let brojilac = slc[1] == '-' ? -whole : whole;
       let imenilac = Math.pow(10, totalOffset) - Math.pow(10, totalOffset - ptrnOffset);
       return Rational.construct(brojilac, imenilac);
-    } 
+    }
 
     else {
       throw new RationalNumFormatError(
