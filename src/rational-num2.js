@@ -210,7 +210,8 @@ class Rational {
    *   - let d = Rational.dtof(.95);
    * ----------------------------------------------------------
   */
-  static dtof(dec) {
+  static dtof(d) {
+    /*
     if (Number.isInteger(dec))
       return Rational.construct(dec, 1);
     
@@ -273,14 +274,16 @@ class Rational {
     num *= powTen;
     num *= sgn;
 
-    return Rational.construct(num, denom);
+    console.log(num + '/' + denom);
+
+    return Rational.construct(num, denom);*/
   
     
     
 
 
 
-    /*
+    
     if (typeof d != "number")
       throw new NotNumberError("argument to 'dtof' not a number");
     let sign = d < 0 ? 0 : 1;
@@ -293,7 +296,7 @@ class Rational {
       let r2 = Rational.construct(Number(s[1]), Math.pow(10, s[1].length));
       return sign ? r1.add(r2) : Rational.negate(r1.add(r2));
     }
-    */
+    
   }
 
 
@@ -311,7 +314,6 @@ class Rational {
   */
   static stof(s) {
     let frac = /^\s*([+-]?)\s*(\d+)\s*[\/\:]\s*([+-]?)\s*(\d+)\s*$/;
-    let dec
     let decPtrn = /^\s*([+-]?)\s*(\d*)\s*\.\s*(\d*)\s*\[\s*(\d+)\s*$/;
     let slc;
 
